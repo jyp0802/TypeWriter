@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Typewriter</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  
+	<link rel="stylesheet" href="css/demo.css">
+	<link rel="stylesheet" href="css/footer-distributed.css">
+	
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</head>
+<body>
+<%= yield %>
+    <nav class="navbar" style="height:100px; background:#FFFFFF; vertical-align=center">
+          <p class"logo" style="text-align:centered; padding:15px 0px" style="color:#cccccc"><h1 style="text-align:center; color:#cccccc">logos</h1></p>
+    </nav>
+		<header>
+
+			<h1><b>Finish!</b></h1>
+			<h2>Print of share your hand written text!</h2>
+			<p><%= image_tag('1.PNG') %>
+			<%= image_tag('1.PNG') %>
+			<%= image_tag('1.PNG') %> &nbsp;
+			</p>
+			<br>
+			
+			<%= image_tag('asdbgw.png') %>
+		  
+
+
+		</header>
+
+		<!-- The content of your page would go here. -->
+
+		
+</body>
+</html>

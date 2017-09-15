@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Typewriter</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  
+	<link rel="stylesheet" href="css/demo.css">
+	<link rel="stylesheet" href="css/footer-distributed.css">
+	
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</head>
+<body>
+<%= yield %>
+    <nav class="navbar" style="height:100px; background:#FFFFFF; vertical-align=center">
+          <p class"logo" style="text-align:centered; padding:15px 0px"><h1 style="text-align:center; color:#cccccc">logos</h1></p>
+    </nav>
+		<header>
+
+			<h1><b>Step 2. Type the Text</b></h1>
+			
+      <form accept-charset="UTF-8" method="post">
+        <textarea name="input" style="width:1024px; height:768px; font-size:20pt"></textarea>
+      </form>
+			
+
+
+		</header>
+
+		<!-- The content of your page would go here. -->
+
+		<footer class="footer-distributed">
+
+		  <div>
+		    <p style="text-align:center">
+		      <a href="../image/output"><button name="next" type="button" style="width:200px; height:100px; font-size:35pt">NEXT</button></a>
+		    </p>
+		    
+		  </div>
+
+		</footer>
+</body>
+</html>
