@@ -51,6 +51,7 @@ def compare(x, y):
 
 
 alphabet_distance = [[[0 for i in range(0)]for j in range(26)]for k in range(26)]
+alphabet_check = np.zeros(26)
 
 #get text label data
 path = os.getcwd()
@@ -64,7 +65,7 @@ for i in range(len(label_data)):
 
 no = 0
 for t in range(len(label_data)):
-
+	print("loooooop"+str(t))##
 	#open raw image
 	name = "jy_ipad_"
 	raw_image = Image.open((os.path.join(path, name+str(no)+".png")))
@@ -100,7 +101,7 @@ for t in range(len(label_data)):
 	    if i<cur or cur == i:
 	        continue
 
-	    if group_num[i][1]<=group_num[cur][1]:
+	    if (group_num[i][1]<=group_num[cur][1]+7 and group_num[i][0]<group_num[cur][1]):
 
 	        cnt-=1
 	        for j in range(group_num[i][0], group_num[i][1]+1):
@@ -125,7 +126,7 @@ for t in range(len(label_data)):
 	label_num = 0
 	before = -1
 
-	alphabet_check = np.zeros(26)
+
 	cur = 0
 
 	for i in range(len(group_num)):
