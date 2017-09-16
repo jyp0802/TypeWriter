@@ -17,7 +17,6 @@ for i in range(26):
             array[i].append(0)
 
 
-
 # image array with alphabet
 files = [Image] * 26
 
@@ -29,12 +28,12 @@ f.close()
 data = list(data)
 
 # basic parameters (image width, height, space width, starting point)
-antiheight = 40  #g의 가장 윗부분 높이
-width_of_image = 1024
-height_of_image = 1024
-width_of_space = 30
-word_coord_x = int(width_of_image / 15)
-word_coord_y = int(height_of_image / 15)
+antiheight = 100  #g의 가장 윗부분 높이
+width_of_image = 2048
+height_of_image = 2048
+width_of_space = 80
+word_coord_x = int(width_of_image / 10)
+word_coord_y = int(height_of_image / 10)
 
 pred_word = None
 current_word = None
