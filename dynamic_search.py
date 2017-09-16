@@ -1,5 +1,3 @@
-#-*- coding: utf-8 -*-
-
 import numpy as np
 from PIL import Image
 import os
@@ -52,132 +50,134 @@ def compare(x, y):
         return -1
 
 
+alphabet_distance = [[[0 for i in range(0)]for j in range(26)]for k in range(26)]
+
 #get text label data
 path = os.getcwd()
 f = open(os.path.join(path, "raw_data.txt"),'r')
 label_data = f.read()
 f.close()
-label_data = list(label_data)
+label_data = label_data.split()
+for i in range(len(label_data)):
+	label_data[i] = list(label_data[i])
 
 
-#open raw image
-name = "raw_image"
-raw_image = Image.open((os.path.join(path, name+".png")))
+no = 0
+for t in range(len(label_data)):
 
-image_pixels = raw_image.load()
+	#open raw image
+	name = "jy_ipad_"
+	raw_image = Image.open((os.path.join(path, name+str(no)+".png")))
 
-image_array = np.array(raw_image)
-width = image_array.shape[1]
-height = image_array.shape[0]
+	image_pixels = raw_image.load()
 
-#make dynamic promgamming table
-dp_table = np.zeros((width, height))
-group_num = []
+	image_array = np.array(raw_image)
+	width = image_array.shape[1]
+	height = image_array.shape[0]
 
-cnt = 1
+	#make dynamic promgamming table
+	dp_table = np.zeros((width, height))
+	group_num = []
 
-for i in range(width):
-    for j in range(height):
-        if(image_pixels[i,j][0]+image_pixels[i,j][1]+image_pixels[i,j][2]<400 and  dp_table[i,j]==0):
-            s1,e1,s2,e2 = check_func(i,j, cnt)
-            group_num.append([s1,e1,s2,e2,cnt])
-            cnt+=1
-            #print("i,j"+str(i)+str(j))
+	cnt = 1
 
-
-cnt-=1
-
-print("cnt : "+str(cnt))
-
-group_num = sorted(group_num, key = lambda x:(x[0], -x[1]))
-cur = 0
-for i in range(len(group_num)):
-    if i<cur or cur == i:
-        continue
-
-    if group_num[i][1]<=group_num[cur][1]:
-
-        cnt-=1
-        for j in range(group_num[i][0], group_num[i][1]+1):
-            for k in range(height):
-                if dp_table[j,k]==group_num[i][4]:
-                    dp_table[j,k] = group_num[cur][4]
-        print("merged"+str(cur))
-        group_num[i][4] = group_num[cur][4]
-
-        group_num[cur][0] = min(group_num[cur][0],group_num[i][0])
-        group_num[cur][1] = max(group_num[cur][1],group_num[i][1])
-        group_num[cur][2] = min(group_num[cur][2],group_num[i][2])
-        group_num[cur][3] = max(group_num[cur][3],group_num[i][3])
+	for i in range(width):
+	    for j in range(height):
+	        if(image_pixels[i,j][0]+image_pixels[i,j][1]+image_pixels[i,j][2]<400 and  dp_table[i,j]==0):
+	            s1,e1,s2,e2 = check_func(i,j, cnt)
+	            group_num.append([s1,e1,s2,e2,cnt])
+	            cnt+=1
+	            #print("i,j"+str(i)+str(j))
 
 
+	cnt-=1
 
-    else:
-        cur = i
+	print("cnt : "+str(cnt))
 
-print("cnt : "+str(cnt))
+	group_num = sorted(group_num, key = lambda x:(x[0], -x[1]))
+	cur = 0
+	for i in range(len(group_num)):
+	    if i<cur or cur == i:
+	        continue
 
-label_num = 0
-before = -1
+	    if group_num[i][1]<=group_num[cur][1]:
 
-alphabet_check = np.zeros(26)
-alphabet_distance = [[[0 for i in range(0)]for j in range(26)]for k in range(26)]
-cur = 0
+	        cnt-=1
+	        for j in range(group_num[i][0], group_num[i][1]+1):
+	            for k in range(height):
+	                if dp_table[j,k]==group_num[i][4]:
+	                    dp_table[j,k] = group_num[cur][4]
+	        print("merged"+str(cur))
+	        group_num[i][4] = group_num[cur][4]
 
-for i in range(len(group_num)):
-    if i<before or i== before:
-        continue
-    if(group_num[i][4]-i!=1):
-        continue
-
-    new_width = group_num[i][1]-group_num[i][0]+1
-    new_height = group_num[i][3]-group_num[i][2]+1
-    print(i)
-    print(new_width)
-    print(new_height)
-
-    one_latter = Image.new("RGB",(new_width, new_height), "white")
-    new_pixels = one_latter.load()
-
-    for j in range(new_width):
-        for k in range(new_height):
-            if(dp_table[j+group_num[i][0],k+group_num[i][2]]== group_num[i][4]):
-                new_pixels[j,k] = (image_pixels[j+group_num[i][0],k+group_num[i][2]][0],image_pixels[j+group_num[i][0],k+group_num[i][2]][1], image_pixels[j+group_num[i][0],k+group_num[i][2]][2])
-
-    alphabet = ord(label_data[label_num])-97
-
-    if label_num>0 or label_num ==0:
-        before_alpa = ord(label_data[label_num-1])-97
-    else:
-        before_alpa = -1
-
-    alphabet_check[alphabet] = int(alphabet_check[alphabet]+1)
-    if((before>0 or before==0)and before<26):
-        print("alphabet")
-        print(before_alpa)
-        print(alphabet)
-        print(group_num[i][0])
-        print(group_num[before][1])
-        alphabet_distance[before_alpa][alphabet].append(group_num[i][0] - group_num[before][1])
-
-    one_latter.save(path+"/dynamic_data/"+label_data[label_num]+str(int(alphabet_check[alphabet]))+".png")
-    print(str(alphabet_check[alphabet]))
-    before = i
-    label_num+=1
+	        group_num[cur][0] = min(group_num[cur][0],group_num[i][0])
+	        group_num[cur][1] = max(group_num[cur][1],group_num[i][1])
+	        group_num[cur][2] = min(group_num[cur][2],group_num[i][2])
+	        group_num[cur][3] = max(group_num[cur][3],group_num[i][3])
 
 
 
+	    else:
+	        cur = i
+
+	print("cnt : "+str(cnt))
+
+	label_num = 0
+	before = -1
+
+	alphabet_check = np.zeros(26)
+	cur = 0
+
+	for i in range(len(group_num)):
+	    if i<before or i== before:
+	        continue
+	    if(group_num[i][4]-i!=1):
+	        continue
+
+	    new_width = group_num[i][1]-group_num[i][0]+1
+	    new_height = group_num[i][3]-group_num[i][2]+1
+	    print(i)
+	    print(new_width)
+	    print(new_height)
+
+	    one_latter = Image.new("RGB",(new_width, new_height), "white")
+	    new_pixels = one_latter.load()
+
+	    for j in range(new_width):
+	        for k in range(new_height):
+	            if(dp_table[j+group_num[i][0],k+group_num[i][2]]== group_num[i][4]):
+	                new_pixels[j,k] = (image_pixels[j+group_num[i][0],k+group_num[i][2]][0],image_pixels[j+group_num[i][0],k+group_num[i][2]][1], image_pixels[j+group_num[i][0],k+group_num[i][2]][2])
+
+	    alphabet = ord(label_data[t][label_num])-97
+
+	    if label_num>0 or label_num ==0:
+	        before_alpa = ord(label_data[t][label_num-1])-97
+	    else:
+	        before_alpa = -1
+
+	    alphabet_check[alphabet] = int(alphabet_check[alphabet]+1)
+	    if((before>0 or before==0)and before<26):
+	        print("alphabet")
+	        print(before_alpa)
+	        print(alphabet)
+	        print(group_num[i][0])
+	        print(group_num[before][1])
+	        alphabet_distance[before_alpa][alphabet].append(group_num[i][0] - group_num[before][1])
+
+	    one_latter.save(path+"/dynamic_data/"+label_data[t][label_num]+str(int(alphabet_check[alphabet]))+".png")
+	    print(str(alphabet_check[alphabet]))
+	    before = i
+	    label_num+=1
+
+	no += 1
 
 
+result_file = open('space_result', 'w')
 
+for i in range(26):
+  for j in range(26):
+    result_file.write(str(len(alphabet_distance[i][j]))+" ")
+    for c in range(len(alphabet_distance[i][j])):
+    	result_file.write(str(alphabet_distance[i][j][c])+" ")
 
-
-
-
-
-
-
-
-
-
-
+result_file.close()
