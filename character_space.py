@@ -18,7 +18,6 @@ txt = ["aabacadaeagahaiajakalamanaoapaqarasa","tauavawaxayaza",
        "ghhihjhkhlhmhnhohphqhrhshthuhvhwhxhyhzh"]
 
 if (os.path.isfile('res')):
-    print "ASD"
     afile = open('res', 'r')
     adata = afile.read();
     adata = adata.split();
@@ -35,7 +34,7 @@ else:
             data[i].append([0, 0, 0])
 
 for pic in range(len(txt)):
-    path = "in" + str(pic + 1) + ".png"
+    path = "./input_data/in" + str(pic + 1) + ".png"
     img = Image.open(path)
     w, h = img.size
 
@@ -68,17 +67,6 @@ for pic in range(len(txt)):
                 tmp = False
                 dt[cc][1] = i-1
                 cc += 1
-    if (not (cc ==len(txt[pic]))):
-        print "ERROR " + str(cc) + " " +str(len(txt[pic]))
-        for a in range(h):
-            for b in range(w):
-                P = p_img[b, a]
-                if (P[0] + P[1] + P[2] < 400):
-                    print 0,
-                else:
-                    print " ",
-            print ""
-        break
 
 
     for c in range(1,len(txt[pic])):
@@ -92,8 +80,6 @@ bfile = open('res', 'w')
 
 for i in range(26):
     for j in range(26):
-        # if (data[i][j][2] > 0):
-        #     data[i][j][0] = data[i][j][0] / data[i][j][2]
         bfile.write(str(data[i][j][0]) + " " + str(data[i][j][1]) + " " + str(data[i][j][2]) + " ")
 
 bfile.close()
