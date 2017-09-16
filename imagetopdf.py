@@ -12,8 +12,6 @@ data = f.read()
 f.close()
 data = list(data)
 
-is_capital_or_not = False
-
 # resizing a image with standards
 # a b c d e f  g  h  i    j  k  l m n o p q r s t u v w x y z
 # 1 2 1 2 1 2  2  2 1.5  2.5 2  2 1 1 1 2 2 1 1 2 1 1 1 1 2 1
@@ -41,9 +39,13 @@ def resize_with_formal_style(standard_height = None):
         img.save(chr(image_index+97)+".png")
 
 
-def resize_with_casual_style(standard_height = 40):
+
+
+def resize_with_casual_style(standard_height = None):
+    # lower case
     for image_index in range(26):
-        img = Image.open((os.path.join(path, chr(image_index+97)+".png")))
+        standard_height = 40
+        img = Image.open((os.path.join(path, chr(image_index+97)+"0.png")))
         # standard "A"
         if image_index == 0:
             height_ratio = (standard_height / float(img.size[1]))
@@ -55,7 +57,17 @@ def resize_with_casual_style(standard_height = 40):
             height_size = int((float(img.size[1]) * float(height_ratio)))
             img = img.resize((width_size, height_size), Image.ANTIALIAS)
 
-        img.save(chr(image_index+97)+".png")
+        img.save(chr(image_index+97)+"0.png")
+
+
+    # upper case
+    for image_index in range(26):
+        standard_height = 80
+        img = Image.open((os.path.join(path, chr(image_index+97)+"c.png")))
+        height_ratio = (standard_height / float(img.size[1]))
+        width_size = int((float(img.size[0]) * float(height_ratio)))
+        img = img.resize((width_size, standard_height), Image.ANTIALIAS)
+        img.save(chr(image_index+97)+"c.png")
 
 
 resize_with_casual_style()
@@ -73,7 +85,6 @@ for i in range(26):
             array[i].append(int(int(adata[(3 * j) + (3 * 26 * i)]) / int(adata[(3 * j) + (3 * 26 * i) + 2])))
         else:
             array[i].append(0)
-
 
 
 # basic parameters (image width, height, space width, starting point)
@@ -108,11 +119,33 @@ for i in data:
             print("new line")
             word_coord_x = int(width_of_image / 15)
             word_coord_y += int(height_of_image / 8)
+
+        # capital word
+        elif (val > -33) and (val < -6):
+            capital_image = Image.open((os.path.join(path, i + "c.png")))
+            capital_image_array = np.array(capital_image)
+            capital_image_pixel = capital_image.load()
+
+            width = capital_image_array.shape[1]
+            height = capital_image_array.shape[0]
+
+            for j in range(width):
+                for k in range(height):
+                    if capital_image_pixel[j, k][0] + capital_image_pixel[j, k][1] + capital_image_pixel[j, k][2] < 360:
+                        pixels[word_coord_x + j + 5, word_coord_y-height+antiheight+ k] = (0, 0, 0)
+
+            word_coord_x += (width + 5)
+            if (word_coord_x > width_of_image - int(width_of_image / 15)):
+                print("new line")
+                word_coord_x = int(width_of_image / 15)
+                word_coord_y += int(height_of_image / 8)
+
+
         pred_word = None
         continue
 
     # image open each alphabet
-    image = Image.open((os.path.join(path, i+".png")))
+    image = Image.open((os.path.join(path, i+"0.png")))
     image_array = np.array(image)
     image_pixel = image.load()
 
