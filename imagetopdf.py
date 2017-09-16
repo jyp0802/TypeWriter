@@ -51,7 +51,14 @@ for i in data:
 
     # if it is not a alphabet
     if val < 0 or val > 25:
-        word_coord_x = word_coord_x + width_of_space
+        # space
+        if val == -65:
+            word_coord_x = word_coord_x + width_of_space
+        # enter(carriage return)
+        elif val == -87:
+            print("new line")
+            word_coord_x = int(width_of_image / 15)
+            word_coord_y += int(height_of_image / 8)
         pred_word = None
         continue
 
@@ -106,4 +113,3 @@ for i in data:
     pred_word = current_word
 
 im.save("result.png")
-
