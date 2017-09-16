@@ -26,8 +26,8 @@ f.close()
 
 
 #시작점 설정
-x = 40
-y = 40
+x = 100
+y = 100
 
 antiheight = 40  #g의 가장 윗부분 높이
 data = list(data)
@@ -61,12 +61,17 @@ for i in data:
 
 
     #gpqjy
-    if(val == 6 or val == 9 or val==15 or val==16 or val==24):
+    if(val == 6 or val==15 or val==16 or val==24):
         for j in range(width):
             for k in range(height):
                 if image_pixel[j, k][0] + image_pixel[j, k][1] + image_pixel[j, k][2] < 400:
                     pixels[x+j, y+k] = (0, 0, 0)
 
+    elif(val == 9):
+        for j in range(width):
+            for k in range(height):
+                if image_pixel[j, k][0] + image_pixel[j, k][1] + image_pixel[j, k][2] < 400:
+                    pixels[x+j, y+k-10] = (0, 0, 0)
 
     # 나머지 a~
     else:
