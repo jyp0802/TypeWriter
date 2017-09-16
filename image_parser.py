@@ -12,7 +12,7 @@ original_pixels = original_image.load()
 # background color with white, alphabet with red
 for i in range(original_array.shape[1]):
     for j in range(original_array.shape[0]):
-        if original_pixels[i, j][0] + original_pixels[i, j][1] + original_pixels[i, j][2] < 400:
+        if original_pixels[i, j][0] + original_pixels[i, j][1] + original_pixels[i, j][2] < 360:
             original_pixels[i, j] = (0, 0, 0)
         else:
             original_pixels[i, j] = (255, 255, 255)
@@ -62,4 +62,3 @@ for i in range(modified_array.shape[1]):
         horizontal_max = 0
     num_of_white = 0
 
-#original_image.show()
