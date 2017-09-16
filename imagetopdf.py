@@ -1,6 +1,7 @@
 from PIL import Image
 import os
 import numpy as np
+from random import randint
 
 # image array with alphabet
 files = [Image] * 26
@@ -21,7 +22,7 @@ data = list(data)
 
 def resize_with_formal_style(standard_height = None):
     for image_index in range(26):
-        img = Image.open((os.path.join(path, chr(image_index+97)+".png")))
+        img = Image.open((os.path.join(path, chr(image_index+97)+"0.png")))
 
         if (image_index == 1 or image_index == 3 or image_index == 5 or image_index == 6 or image_index == 7 or
                     image_index == 10 or image_index == 11 or image_index == 15 or image_index == 16 or image_index == 19 or image_index == 24):
@@ -36,15 +37,23 @@ def resize_with_formal_style(standard_height = None):
         height_ratio = (standard_height / float(img.size[1]))
         width_size = int((float(img.size[0]) * float(height_ratio)))
         img = img.resize((width_size, standard_height), Image.ANTIALIAS)
-        img.save(chr(image_index+97)+".png")
+        img.save(chr(image_index+97)+"0.png")
 
-
+    for image_index in range(26):
+        standard_height = 80
+        img = Image.open((os.path.join(path, chr(image_index+97)+"c.png")))
+        height_ratio = (standard_height / float(img.size[1]))
+        width_size = int((float(img.size[0]) * float(height_ratio)))
+        img = img.resize((width_size, standard_height), Image.ANTIALIAS)
+        img.save(chr(image_index+97)+"c.png")
 
 
 def resize_with_casual_style(standard_height = None):
     # lower case
+
     for image_index in range(26):
-        standard_height = 40
+        rand_num = randint(-7, 2)
+        standard_height = 46 + rand_num
         img = Image.open((os.path.join(path, chr(image_index+97)+"0.png")))
         # standard "A"
         if image_index == 0:
@@ -55,23 +64,24 @@ def resize_with_casual_style(standard_height = None):
         else:
             width_size = int((float(img.size[0]) * float(height_ratio)))
             height_size = int((float(img.size[1]) * float(height_ratio)))
-            img = img.resize((width_size, height_size), Image.ANTIALIAS)
+            img = img.resize((width_size + rand_num, height_size + rand_num), Image.ANTIALIAS)
 
         img.save(chr(image_index+97)+"0.png")
 
 
     # upper case
     for image_index in range(26):
-        standard_height = 80
+        rand_num = randint(-15, -6)
+        standard_height = 78 + rand_num
         img = Image.open((os.path.join(path, chr(image_index+97)+"c.png")))
         height_ratio = (standard_height / float(img.size[1]))
         width_size = int((float(img.size[0]) * float(height_ratio)))
-        img = img.resize((width_size, standard_height), Image.ANTIALIAS)
+        img = img.resize((width_size + rand_num, standard_height + rand_num), Image.ANTIALIAS)
         img.save(chr(image_index+97)+"c.png")
 
-
 resize_with_casual_style()
-
+is_casual=True
+#resize_with_formal_style()
 
 # distance between alphabet (x axis)
 afile = open('res', 'r')
@@ -128,11 +138,15 @@ for i in data:
 
             width = capital_image_array.shape[1]
             height = capital_image_array.shape[0]
+            rand_num = randint(-5, 5)
 
             for j in range(width):
                 for k in range(height):
                     if capital_image_pixel[j, k][0] + capital_image_pixel[j, k][1] + capital_image_pixel[j, k][2] < 360:
-                        pixels[word_coord_x + j + 5, word_coord_y-height+antiheight+ k] = (0, 0, 0)
+                        if is_casual:
+                            pixels[word_coord_x + j + 5, word_coord_y-height+antiheight+ k + rand_num] = (0, 0, 0)
+                        else:
+                            pixels[word_coord_x + j + 5, word_coord_y-height+antiheight+ k] = (0, 0, 0)
 
             word_coord_x += (width + 5)
             if (word_coord_x > width_of_image - int(width_of_image / 15)):
@@ -153,6 +167,7 @@ for i in data:
     width = image_array.shape[1]
     height = image_array.shape[0]
     current_word = val
+    rand_num = randint(-7, 7)
 
     if pred_word is None:
         shift = 0
@@ -165,7 +180,10 @@ for i in data:
         for j in range(width):
             for k in range(height):
                 if image_pixel[j, k][0] + image_pixel[j, k][1] + image_pixel[j, k][2] < 360:
-                    pixels[word_coord_x + j + shift, word_coord_y+k] = (0, 0, 0)
+                    if is_casual:
+                        pixels[word_coord_x + j + shift, word_coord_y + k + rand_num] = (0, 0, 0)
+                    else:
+                        pixels[word_coord_x + j + shift, word_coord_y+k] = (0, 0, 0)
 
 
     # alphabet "j" (adjusted height)
@@ -173,14 +191,20 @@ for i in data:
         for j in range(width):
             for k in range(height):
                 if image_pixel[j, k][0] + image_pixel[j, k][1] + image_pixel[j, k][2] < 360:
-                    pixels[word_coord_x + j + shift, word_coord_y+k-10] = (0, 0, 0)
+                    if is_casual:
+                        pixels[word_coord_x + j + shift, word_coord_y + k - 10 + rand_num] = (0, 0, 0)
+                    else:
+                        pixels[word_coord_x + j + shift, word_coord_y+k-10] = (0, 0, 0)
 
     # a to z except "gpqjy"
     else:
         for j in range(width):
             for k in range(height):
                 if image_pixel[j, k][0] + image_pixel[j, k][1] + image_pixel[j, k][2] < 360:
-                    pixels[word_coord_x + j + shift, word_coord_y-height+antiheight+ k] = (0, 0, 0)
+                    if is_casual:
+                        pixels[word_coord_x + j + shift, word_coord_y - height + antiheight + k+ rand_num] = (0, 0, 0)
+                    else:
+                        pixels[word_coord_x + j + shift, word_coord_y-height+antiheight+ k] = (0, 0, 0)
 
 
     # width plus for next alphabet
