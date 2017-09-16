@@ -2,6 +2,64 @@ from PIL import Image
 import os
 import numpy as np
 
+# image array with alphabet
+files = [Image] * 26
+
+# read data files with input string
+path = os.getcwd()
+f = open(os.path.join(path, "data.txt"), 'r')
+data = f.read()
+f.close()
+data = list(data)
+
+is_capital_or_not = False
+
+# resizing a image with standards
+# a b c d e f  g  h  i    j  k  l m n o p q r s t u v w x y z
+# 1 2 1 2 1 2  2  2 1.5  2.5 2  2 1 1 1 2 2 1 1 2 1 1 1 1 2 1
+# 0 1 2 3 4 5  6  7  8    9  10 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
+# 1 means 40
+
+
+def resize_with_formal_style(standard_height = None):
+    for image_index in range(26):
+        img = Image.open((os.path.join(path, chr(image_index+97)+".png")))
+
+        if (image_index == 1 or image_index == 3 or image_index == 5 or image_index == 6 or image_index == 7 or
+                    image_index == 10 or image_index == 11 or image_index == 15 or image_index == 16 or image_index == 19 or image_index == 24):
+            standard_height = 80
+        elif image_index == 8:
+            standard_height = 60
+        elif image_index == 9:
+            standard_height = 100
+        else:
+            standard_height = 40
+
+        height_ratio = (standard_height / float(img.size[1]))
+        width_size = int((float(img.size[0]) * float(height_ratio)))
+        img = img.resize((width_size, standard_height), Image.ANTIALIAS)
+        img.save(chr(image_index+97)+".png")
+
+
+def resize_with_casual_style(standard_height = 40):
+    for image_index in range(26):
+        img = Image.open((os.path.join(path, chr(image_index+97)+".png")))
+        # standard "A"
+        if image_index == 0:
+            height_ratio = (standard_height / float(img.size[1]))
+            width_size = int((float(img.size[0]) * float(height_ratio)))
+            img = img.resize((width_size, standard_height), Image.ANTIALIAS)
+
+        else:
+            width_size = int((float(img.size[0]) * float(height_ratio)))
+            height_size = int((float(img.size[1]) * float(height_ratio)))
+            img = img.resize((width_size, height_size), Image.ANTIALIAS)
+
+        img.save(chr(image_index+97)+".png")
+
+
+resize_with_casual_style()
+
 
 # distance between alphabet (x axis)
 afile = open('res', 'r')
@@ -17,21 +75,12 @@ for i in range(26):
             array[i].append(0)
 
 
-# image array with alphabet
-files = [Image] * 26
-
-# read data files with input string
-path = os.getcwd()
-f = open(os.path.join(path, "data.txt"),'r')
-data = f.read()
-f.close()
-data = list(data)
 
 # basic parameters (image width, height, space width, starting point)
-antiheight = 100  #g의 가장 윗부분 높이
 width_of_image = 2048
 height_of_image = 2048
-width_of_space = 80
+antiheight = int(height_of_image / 60)  #g의 가장 윗부분 높이
+width_of_space = int(width_of_image / 30)
 word_coord_x = int(width_of_image / 10)
 word_coord_y = int(height_of_image / 10)
 
@@ -113,3 +162,4 @@ for i in data:
     pred_word = current_word
 
 im.save("result.png")
+
