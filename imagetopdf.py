@@ -24,7 +24,7 @@ data = list(data)
 
 def resize_with_formal_style(standard_height = None):
     for image_index in range(26):
-        img = Image.open((os.path.join(path, chr(image_index+97)+"0.png")))
+        img = Image.open((os.path.join(path, chr(image_index+97)+"0.png")).lower())
 
         if (image_index == 1 or image_index == 3 or image_index == 5 or image_index == 6 or image_index == 7 or
                     image_index == 10 or image_index == 11 or image_index == 15 or image_index == 16 or image_index == 19 or image_index == 24):
@@ -44,7 +44,7 @@ def resize_with_formal_style(standard_height = None):
 
     for image_index in range(26):
         standard_height = 80
-        img = Image.open((os.path.join(path, chr(image_index+97)+"c.png")))
+        img = Image.open((os.path.join(path, chr(image_index+97)+"c.png")).lower())
         height_ratio = (standard_height / float(img.size[1]))
         width_size = int((float(img.size[0]) * float(height_ratio)))
         img = img.resize((width_size, standard_height), Image.ANTIALIAS)
@@ -58,7 +58,7 @@ def resize_with_casual_style(standard_height = None):
     for image_index in range(26):
         rand_num = randint(-7, 2)
         standard_height = 46 + rand_num
-        img = Image.open((os.path.join(path, chr(image_index+97)+"0.png")))
+        img = Image.open((os.path.join(path, chr(image_index+97)+"0.png")).lower())
         # standard "A"
         if image_index == 0:
             height_ratio = (standard_height / float(img.size[1]))
@@ -78,7 +78,7 @@ def resize_with_casual_style(standard_height = None):
     for image_index in range(26):
         rand_num = randint(-15, -6)
         standard_height = 78 + rand_num
-        img = Image.open((os.path.join(path, chr(image_index+97)+"c.png")))
+        img = Image.open((os.path.join(path, chr(image_index+97)+"c.png")).lower())
         height_ratio = (standard_height / float(img.size[1]))
         width_size = int((float(img.size[0]) * float(height_ratio)))
         img = img.resize((width_size + rand_num, standard_height + rand_num), Image.ANTIALIAS)
@@ -138,7 +138,7 @@ for i in data:
 
         # capital word
         elif (val > -33) and (val < -6):
-            capital_image = Image.open((os.path.join(path, i + "c.png")))
+            capital_image = Image.open((os.path.join(path, i + "c.png")).lower())
             capital_image_array = np.array(capital_image)
             capital_image_pixel = capital_image.load()
 
@@ -165,7 +165,7 @@ for i in data:
         continue
 
     # image open each alphabet
-    image = Image.open((os.path.join(path, i+"0.png")))
+    image = Image.open((os.path.join(path, i+"0.png")).lower())
     image_array = np.array(image)
     image_pixel = image.load()
 
