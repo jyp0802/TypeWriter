@@ -27,3 +27,6 @@ imagetopdf.py는 같은 경로에 있는 data.txt 파일을 읽어, 손글씨 �
 ## 4. Application
 
 ### 4.1 GhostWriter
+![Alt GhostWriter Step.1](https://i.imgur.com/2xsl41k.png)
+![Alt GhostWriter Step.2](https://i.imgur.com/mui60fy.png)
+![Alt GhostWriter Step.3](https://i.imgur.com/PwmJDZ5.png)
