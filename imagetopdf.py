@@ -2,6 +2,21 @@ from PIL import Image
 import os
 import numpy as np
 
+
+# distance between alphabet (x axis)
+afile = open('res', 'r')
+adata = afile.read();
+adata = adata.split();
+array = []
+for i in range(26):
+    array.append([])
+    for j in range(26):
+        if (int(adata[(3 * j) + (3 * 26 * i) + 2]) > 0):
+            array[i].append(int(int(adata[(3 * j) + (3 * 26 * i)]) / int(adata[(3 * j) + (3 * 26 * i) + 2])))
+        else:
+            array[i].append(0)
+
+
 # image array with alphabet
 files = [Image] * 26
 
@@ -13,12 +28,15 @@ f.close()
 data = list(data)
 
 # basic parameters (image width, height, space width, starting point)
-antiheight = 40  #g의 가장 윗부분 높이
-width_of_image = 1024
-height_of_image = 1024
-width_of_space = 30
-word_coord_x = int(width_of_image / 15)
-word_coord_y = int(height_of_image / 15)
+antiheight = 100  #g의 가장 윗부분 높이
+width_of_image = 2048
+height_of_image = 2048
+width_of_space = 80
+word_coord_x = int(width_of_image / 10)
+word_coord_y = int(height_of_image / 10)
+
+pred_word = None
+current_word = None
 
 # making new sketchbook (1024 * 1024)
 im = Image.new("RGB",(width_of_image,height_of_image), "white")
@@ -34,6 +52,7 @@ for i in data:
     # if it is not a alphabet
     if val < 0 or val > 25:
         word_coord_x = word_coord_x + width_of_space
+        pred_word = None
         continue
 
     # image open each alphabet
@@ -44,31 +63,39 @@ for i in data:
     # each alphabet's width, height
     width = image_array.shape[1]
     height = image_array.shape[0]
+    current_word = val
+
+    if pred_word is None:
+        shift = 0
+
+    else:
+        shift = array[pred_word][current_word]
 
     # alphabet "gpqy"
     if(val == 6 or val==15 or val==16 or val==24):
         for j in range(width):
             for k in range(height):
                 if image_pixel[j, k][0] + image_pixel[j, k][1] + image_pixel[j, k][2] < 360:
-                    pixels[word_coord_x+j, word_coord_y+k] = (0, 0, 0)
+                    pixels[word_coord_x + j + shift, word_coord_y+k] = (0, 0, 0)
+
 
     # alphabet "j" (adjusted height)
     elif(val == 9):
         for j in range(width):
             for k in range(height):
                 if image_pixel[j, k][0] + image_pixel[j, k][1] + image_pixel[j, k][2] < 360:
-                    pixels[word_coord_x+j, word_coord_y+k-10] = (0, 0, 0)
+                    pixels[word_coord_x + j + shift, word_coord_y+k-10] = (0, 0, 0)
 
     # a to z except "gpqjy"
     else:
         for j in range(width):
             for k in range(height):
                 if image_pixel[j, k][0] + image_pixel[j, k][1] + image_pixel[j, k][2] < 360:
-                    pixels[word_coord_x + j, word_coord_y-height+antiheight+ k] = (0, 0, 0)
+                    pixels[word_coord_x + j + shift, word_coord_y-height+antiheight+ k] = (0, 0, 0)
 
 
     # width plus for next alphabet
-    word_coord_x+= width
+    word_coord_x+= (width+shift)
 
     # new line rules
     if(word_coord_x>width_of_image-int(width_of_image / 15)):
@@ -76,6 +103,7 @@ for i in data:
         word_coord_x = int(width_of_image / 15)
         word_coord_y += int(height_of_image / 8)
 
+    pred_word = current_word
 
 im.save("result.png")
 
