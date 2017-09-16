@@ -39,7 +39,8 @@ def resize_with_formal_style(standard_height = None):
         height_ratio = (standard_height / float(img.size[1]))
         width_size = int((float(img.size[0]) * float(height_ratio)))
         img = img.resize((width_size, standard_height), Image.ANTIALIAS)
-        img.save(chr(image_index+97)+"0.png")
+        dir = chr(image_index+97)+"0.png"
+        img.save(dir.lower())
 
     for image_index in range(26):
         standard_height = 80
@@ -47,7 +48,8 @@ def resize_with_formal_style(standard_height = None):
         height_ratio = (standard_height / float(img.size[1]))
         width_size = int((float(img.size[0]) * float(height_ratio)))
         img = img.resize((width_size, standard_height), Image.ANTIALIAS)
-        img.save(chr(image_index+97)+"c.png")
+        dir = chr(image_index+97)+"c.png"
+        img.save(dir.lower())
 
 
 def resize_with_casual_style(standard_height = None):
@@ -68,7 +70,8 @@ def resize_with_casual_style(standard_height = None):
             height_size = int((float(img.size[1]) * float(height_ratio)))
             img = img.resize((width_size + rand_num, height_size + rand_num), Image.ANTIALIAS)
 
-        img.save(chr(image_index+97)+"0.png")
+        dir = chr(image_index+97)+"0.png"
+        img.save(dir.lower())
 
 
     # upper case
@@ -79,7 +82,8 @@ def resize_with_casual_style(standard_height = None):
         height_ratio = (standard_height / float(img.size[1]))
         width_size = int((float(img.size[0]) * float(height_ratio)))
         img = img.resize((width_size + rand_num, standard_height + rand_num), Image.ANTIALIAS)
-        img.save(chr(image_index+97)+"c.png")
+        dir = chr(image_index+97)+"c.png"
+        img.save(dir.lower())
 
 resize_with_casual_style()
 is_casual=True
