@@ -68,7 +68,9 @@ for t in range(2):
 
         if (num_of_white == height[t+1]-height[t]) and isDetected:
             img = modified_array[ver_min:ver_max, horizontal_min:horizontal_max]
-            scipy.misc.imsave(chr(97+index)+capital_or_not[t]+'.png', img)
+            dir = chr(97+index)+capital_or_not[t]+'.png'
+            dir = dir.lower()
+            scipy.misc.imsave(dir, img)
             index = index + 1
             isDetected = False
             num_of_white = 0
