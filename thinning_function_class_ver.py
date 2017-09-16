@@ -5,7 +5,7 @@ import scipy.misc
 
 #using example
 #Thin = thinning_function_class_ver.Thinning("raw_image")
-#Thin.thinning(100)
+#Thin.thinning("thinned",100)
 
 class Thinning:
 
@@ -70,7 +70,7 @@ class Thinning:
             return 0
 
 
-    def thinning(self, threshold):
+    def thinning(self, name,threshold):
         cnt = 1
         self.threshold = 0
         while (cnt > 0 and self.threshold < threshold):
@@ -118,7 +118,7 @@ class Thinning:
                         self.image_pixels[i, j] = (255, 255, 255)
                         self.check_array[i, j] = 0
 
-        self.raw_image.save("Thinning" + ".png")
+        self.raw_image.save(name + ".png")
 
 
 
