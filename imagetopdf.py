@@ -26,10 +26,10 @@ f.close()
 
 
 #시작점 설정
-x = 20
-y = 20
+x = 40
+y = 40
 
-antiheight = 70  #g의 가장 윗부분 높이
+antiheight = 40  #g의 가장 윗부분 높이
 data = list(data)
 width_of_image = 1024
 height_of_image = 1024
@@ -64,14 +64,8 @@ for i in data:
     if(val == 6 or val == 9 or val==15 or val==16 or val==24):
         for j in range(width):
             for k in range(height):
-                #rgb = files[i].load()
-                #print (image_pixel[j, k])
                 if image_pixel[j, k][0] + image_pixel[j, k][1] + image_pixel[j, k][2] < 400:
                     pixels[x+j, y+k] = (0, 0, 0)
-
-            #r,g,b = files[i].getpixel((j,k))
-                #if(r+g+b<100):
-                    #pixels[x+j,y+k] = (0,0,0)
 
 
     # 나머지 a~
@@ -97,10 +91,10 @@ for i in data:
     x+= width
 
     #줄바꿈
-    if(x>width_of_image-50):
+    if(x>width_of_image-100):
         print ("new line")
         x = 20
-        y+= 100
+        y+= 150
 
 
 
