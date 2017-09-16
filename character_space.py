@@ -25,7 +25,7 @@ if (os.path.isfile('res')):
     for i in range(26):
         data.append([])
         for j in range(26):
-            data[i].append([int(adata[(3*j)+(26*i)]),int(adata[(3*j)+(26*i)+1]),int(adata[(3*j)+(26*i)+2])])
+            data[i].append([int(adata[(3*j)+(3*26*i)]),int(adata[(3*j)+(3*26*i)+1]),int(adata[(3*j)+(3*26*i)+2])])
 else:
     data = []  # [hor dist, ver dist, cnt]
     for i in range(26):
