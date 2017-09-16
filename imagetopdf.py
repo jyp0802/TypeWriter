@@ -1,16 +1,18 @@
 from PIL import Image
-
+import os
 #파일 경로, 수정필요
-path = "/"
+'''
+path = os.getcwd()
 files = []
 
 #각 이미지 파일 로드
 for i in range(0,25):
     filename = chr(i+97)
-    files[i] = Image.open(path+"/"+filename+".png")
+    files.append(Image.open(os.path.join(path, filename+".png")))
     files[i] = files[i].convert('RGB')
 
-f = open(path+"/data.txt",'r')
+f = open(os.path.join(path, "data.txt"),'r')
+'''
 data = f.read()
 f.close()
 
@@ -67,5 +69,5 @@ for i in data:
 
 
 #im.show
-im.save("reasult.png")
+im.save("result.png")
 
