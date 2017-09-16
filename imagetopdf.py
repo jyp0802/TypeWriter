@@ -12,10 +12,9 @@ data = f.read()
 f.close()
 data = list(data)
 
-
+is_capital_or_not = False
 
 # resizing a image with standards
-
 # a b c d e f  g  h  i    j  k  l m n o p q r s t u v w x y z
 # 1 2 1 2 1 2  2  2 1.5  2.5 2  2 1 1 1 2 2 1 1 2 1 1 1 1 2 1
 # 0 1 2 3 4 5  6  7  8    9  10 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
@@ -29,16 +28,12 @@ def resize_with_formal_style(standard_height = None):
         if (image_index == 1 or image_index == 3 or image_index == 5 or image_index == 6 or image_index == 7 or
                     image_index == 10 or image_index == 11 or image_index == 15 or image_index == 16 or image_index == 19 or image_index == 24):
             standard_height = 80
-            print ("one")
         elif image_index == 8:
             standard_height = 60
-            print ("i")
         elif image_index == 9:
             standard_height = 100
-            print ("j")
         else:
             standard_height = 40
-            print ("etc")
 
         height_ratio = (standard_height / float(img.size[1]))
         width_size = int((float(img.size[0]) * float(height_ratio)))
@@ -78,7 +73,6 @@ for i in range(26):
             array[i].append(int(int(adata[(3 * j) + (3 * 26 * i)]) / int(adata[(3 * j) + (3 * 26 * i) + 2])))
         else:
             array[i].append(0)
-
 
 
 
