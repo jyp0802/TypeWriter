@@ -3,7 +3,7 @@ import numpy as np
 import scipy.misc
 
 # image read
-original_image = Image.open('original3.png')
+original_image = Image.open('original4.png')
 
 # pixeling, array
 original_array = np.array(original_image)
