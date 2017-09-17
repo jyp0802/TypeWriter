@@ -56,8 +56,8 @@ def resize_with_casual_style(standard_height = None):
     # lower case
 
     for image_index in range(26):
-        rand_num = randint(-7, 2)
-        standard_height = 46 + rand_num
+        rand_num = randint(-3, 2)
+        standard_height = 40 + rand_num
         img = Image.open((os.path.join(path, chr(image_index+97)+"0.png")).lower())
         # standard "A"
         if image_index == 0:
@@ -76,8 +76,8 @@ def resize_with_casual_style(standard_height = None):
 
     # upper case
     for image_index in range(26):
-        rand_num = randint(-15, -6)
-        standard_height = 78 + rand_num
+        rand_num = randint(-5, 0)
+        standard_height = 80 + rand_num
         img = Image.open((os.path.join(path, chr(image_index+97)+"c.png")).lower())
         height_ratio = (standard_height / float(img.size[1]))
         width_size = int((float(img.size[0]) * float(height_ratio)))
@@ -104,8 +104,8 @@ for i in range(26):
 
 
 # basic parameters (image width, height, space width, starting point)
-width_of_image = 2048
-height_of_image = 2048
+width_of_image = 1680
+height_of_image = 1680
 antiheight = int(height_of_image / 60)  #g의 가장 윗부분 높이
 width_of_space = int(width_of_image / 30)
 word_coord_x = int(width_of_image / 10)
@@ -144,15 +144,15 @@ for i in data:
 
             width = capital_image_array.shape[1]
             height = capital_image_array.shape[0]
-            rand_num = randint(-5, 5)
+            rand_num = randint(-3, 3)
 
             for j in range(width):
                 for k in range(height):
                     if capital_image_pixel[j, k][0] + capital_image_pixel[j, k][1] + capital_image_pixel[j, k][2] < 360:
                         if is_casual:
-                            pixels[word_coord_x + j + 5, word_coord_y-height+antiheight+ k + rand_num] = (0, 0, 0)
+                            pixels[word_coord_x + j + rand_num, word_coord_y-height+antiheight+ k + rand_num] = (0, 0, 0)
                         else:
-                            pixels[word_coord_x + j + 5, word_coord_y-height+antiheight+ k] = (0, 0, 0)
+                            pixels[word_coord_x + j, word_coord_y-height+antiheight+ k] = (0, 0, 0)
 
             word_coord_x += (width + 5)
             if (word_coord_x > width_of_image - int(width_of_image / 15)):
@@ -173,13 +173,15 @@ for i in data:
     width = image_array.shape[1]
     height = image_array.shape[0]
     current_word = val
-    rand_num = randint(-7, 7)
+    rand_num = randint(-3, 3)
 
     if pred_word is None:
         shift = 0
 
     else:
         shift = array[pred_word][current_word]
+        if shift == 0:
+            shift = 3
 
     # alphabet "gpqy"
     if(val == 6 or val==15 or val==16 or val==24):
